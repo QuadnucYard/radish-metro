@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - src/
+      - web/
+  workflow_dispatch:
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+env:
+  FILE_NAME: radish-system-map
+
+jobs:
+  build-gh-pages:
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v3
+
+      - name: Download radishom
+        run: |
+          git clone https://github.com/QuadnucYard/radishom.git $HOME/.local/share/typst/packages/local/radishom/0.1.0
+
+      - name: Download font assets
+        run: |
+          mkdir -p assets/fonts/
+          curl -L https://github.com/QuadnucYard/radish-metro/releases/download/assets/fonts.tar.gz | tar -xvz -C assets/fonts
+
+      - name: Compile documents
+        run: |
+          mkdir dist
+          mkdir dist/assets
+          cp web/index.html dist/index.html
+          typst fonts --ignore-system-fonts --variants --font-path assets/fonts/
+          typst compile src/system-map/main.typ dist/assets/${{ env.FILE_NAME }}.svg --root . --ignore-system-fonts --font-path assets/fonts/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./dist"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

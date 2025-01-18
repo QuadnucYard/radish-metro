@@ -1,0 +1,39 @@
+name: Generate PDF
+
+on:
+  push:
+    paths:
+      - src/
+
+env:
+  FILE_NAME: radish-system-map
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v3
+
+      - name: Download radishom
+        run: |
+          git clone https://github.com/QuadnucYard/radishom.git $HOME/.local/share/typst/packages/local/radishom/0.1.0
+
+      - name: Download font assets
+        run: |
+          mkdir -p assets/fonts/
+          curl -L https://github.com/QuadnucYard/radish-metro/releases/download/assets/fonts.tar.gz | tar -xvz -C assets/fonts
+
+      - name: Compile documents
+        run: |
+          typst fonts --ignore-system-fonts --variants --font-path assets/fonts/
+          typst compile src/system-map/main.typ ${{ env.FILE_NAME }}.pdf --root . --ignore-system-fonts --font-path assets/fonts/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FILE_NAME }}
+          path: ${{ env.FILE_NAME }}.pdf
