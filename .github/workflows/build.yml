@@ -2,8 +2,12 @@ name: Generate PDF
 
 on:
   push:
-    paths:
-      - src/
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 env:
   FILE_NAME: radish-system-map
