@@ -3,7 +3,9 @@
 
 #import "background.typ"
 #import "components.typ": *
+#import "config.typ"
 #import "fonts.typ"
+#import "legend.typ": *
 #import "radish.typ": nj-radish
 
 
@@ -20,7 +22,7 @@
   line-stroker: line-stroke,
   label-renderer: label-renderer,
   station-plugins: (draw-line-logo,),
-  draw-disabled: true,
+  draw-disabled: config.show-disabled,
 )
 
 #place(bottom + right)[
@@ -32,6 +34,6 @@
 
     仅供学习交流，未经允许不得使用
 
-    https://github.com/QuadnucYard/radishom
+    https://github.com/QuadnucYard/radish-metro
   ]
 ]
