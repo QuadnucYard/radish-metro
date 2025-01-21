@@ -1,1 +1,1 @@
-#import "@local/radishom:0.1.0"
+#import "/submodules/radishom/src/lib.typ" as radishom

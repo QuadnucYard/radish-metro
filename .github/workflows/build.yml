@@ -18,13 +18,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
-
-      - name: Download radishom
-        run: |
-          git clone https://github.com/QuadnucYard/radishom.git $HOME/.local/share/typst/packages/local/radishom/0.1.0
 
       - name: Download font assets
         run: |

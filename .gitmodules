@@ -1,0 +1,3 @@
+[submodule "submodules/radishom"]
+	path = submodules/radishom
+	url = https://github.com/QuadnucYard/radishom
