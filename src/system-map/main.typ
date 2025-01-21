@@ -17,6 +17,7 @@
   foreground: (title, legend),
   background-color: background.land-fill,
   background: background.all,
+  line-stroker: line-stroke,
   label-renderer: label-renderer,
   station-plugins: (draw-line-logo,),
   draw-disabled: true,

@@ -2,6 +2,7 @@
 #import radishom: *
 #import core: vec
 
+#import "config.typ": *
 #import "fonts.typ"
 #import "logo.typ": line-logo
 #import "radish.typ": nj-radish
@@ -140,6 +141,47 @@
 #let title = (pos: (9, 20), body: title-body)
 
 #let legend = (pos: (25, -25), anchor: SW, body: scale(200%, reflow: true, legend-body))
+
+
+#let line-stroke(line, sec, thickness: 6pt) = {
+  let is-operating = (
+    "open-date" in line.metadata
+      and line.metadata.open-date != none
+      and line.metadata.open-date <= desc-date
+      and (
+        "open-date" not in sec.metadata
+          or sec.metadata.open-date == auto
+          or sec.metadata.open-date != none and sec.metadata.open-date <= desc-date
+      )
+  )
+  let is-constructed = (
+    "start-date" in line.metadata
+      and line.metadata.start-date != none
+      and line.metadata.start-date <= desc-date
+      and (
+        "start-date" not in sec.metadata
+          or sec.metadata.start-date == auto
+          or sec.metadata.start-date != none and sec.metadata.start-date <= desc-date
+      )
+  )
+  let paint = if is-constructed {
+    line.color
+  } else {
+    gray
+  }
+  let dash = if is-constructed and is-operating {
+    none
+  } else {
+    (12pt, 4pt)
+  }
+  stroke(
+    paint: paint,
+    thickness: thickness,
+    // cap: "round",
+    join: "round",
+    dash: dash,
+  )
+}
 
 #let label-renderer(station) = {
   show: block.with(inset: (x: 0.5em, y: 0.5em))
