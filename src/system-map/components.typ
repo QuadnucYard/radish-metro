@@ -2,10 +2,11 @@
 #import radishom: *
 #import core: vec
 
-#import "config.typ": *
+#import "config.typ"
 #import "fonts.typ"
 #import "logo.typ": line-logo
 
+#import config: desc-date
 
 #let (N, S, W, E, NW, NE, SW, SE) = dirs
 
@@ -31,12 +32,12 @@
           or sec.metadata.start-date != none and sec.metadata.start-date <= desc-date
       )
   )
-  let paint = if is-constructed or true {
+  let paint = if is-constructed or not config.show-started-only {
     line.color
   } else {
     gray
   }
-  let dash = if is-constructed and is-operating or true {
+  let dash = if is-constructed and is-operating or not config.show-opened-only {
     none
   } else {
     (12pt, 4pt)

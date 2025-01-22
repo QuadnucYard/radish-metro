@@ -11,16 +11,23 @@
 
 #set page(width: auto, height: auto, margin: 0pt)
 
+#let fg = {
+  if config.show-title { (title,) }
+  if config.show-legend { (legend,) }
+}
+
+#config.desc-date
+
 #radishom(
   nj-radish,
   backend: "std",
   unit-length: 2.0cm,
   grid: none,
-  foreground: (title, legend),
+  foreground: fg,
   background-color: background.land-fill,
   background: background.all,
   line-stroker: line-stroke,
-  label-renderer: label-renderer,
+  label-renderer: if config.show-labels { label-renderer },
   station-plugins: (draw-line-logo,),
   draw-disabled: config.show-disabled,
 )
