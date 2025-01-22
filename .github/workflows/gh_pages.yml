@@ -10,10 +10,9 @@ on:
   workflow_dispatch:
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 env:
   FILE_NAME: radish-system-map
@@ -34,6 +33,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
@@ -45,20 +46,27 @@ jobs:
       - name: Download font assets
         run: |
           mkdir -p assets/fonts/
-          curl -L https://github.com/QuadnucYard/radish-metro/releases/download/assets/fonts.tar.gz | tar -xvz -C assets/fonts
+          curl -L https://github.com/QuadnucYard/radish-metro/releases/download/assets/fonts.tar.gz | tar -xvz -C web/src/assets/fonts
 
       - name: Compile documents
         run: |
-          mkdir dist
-          mkdir dist/assets
-          cp web/index.html dist/index.html
-          typst fonts --ignore-system-fonts --variants --font-path assets/fonts/
-          typst compile src/system-map/main.typ dist/assets/${{ env.FILE_NAME }}.svg --root . --ignore-system-fonts --font-path assets/fonts/
+          typst fonts --ignore-system-fonts --variants --font-path web/src/assets/fonts/
+          typst compile src/system-map/main.typ web/src/assets/generated/${{ env.FILE_NAME }}.svg --root . --ignore-system-fonts --font-path web/src/assets/fonts
+
+      - uses: oven-sh/setup-bun@v2
+      - name: Build web
+        run: |
+          cd web
+          bun install
+          bun build-only
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "./dist"
+          path: "./web/dist"
 
       - name: Deploy to GitHub Pages
         id: deployment
