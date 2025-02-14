@@ -10,6 +10,8 @@
 #let show-title = _toggles.at("title", default: true)
 #let show-legend = _toggles.at("legend", default: true)
 
+#let use-alt = _toggles.at("alt", default: true)
+
 #let desc-date = if "date" in _settings {
   let (y, m, d) = _settings.date
   datetime(year: y, month: m, day: d)

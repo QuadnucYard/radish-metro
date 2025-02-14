@@ -6,7 +6,7 @@
 #import "fonts.typ"
 #import "logo.typ": line-logo
 
-#import config: desc-date
+#import config: desc-date, use-alt
 
 #let (N, S, W, E, NW, NE, SW, SE) = dirs
 
@@ -56,10 +56,16 @@
   set par(spacing: 0.2em)
   set smartquote(enabled: false)
 
-  [
-    #text(font: fonts.zh, station.name)
+  let (name-zh, name-en) = if use-alt and "alt" in station.metadata.named() {
+    station.metadata.at("alt")
+  } else {
+    (station.name, station.metadata.at(0, default: none))
+  }
 
-    #text(size: 0.45em, font: fonts.en, station.metadata.at(0))
+  [
+    #text(font: fonts.zh, name-zh)
+
+    #text(size: 0.45em, font: fonts.en, name-en)
   ]
 }
 
