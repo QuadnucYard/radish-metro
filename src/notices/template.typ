@@ -13,7 +13,7 @@
     [#zh #v(0.3em, weak: true) #text(size: 0.4em, en)]
   }
 
-  show: notice
+  show: notice.with(flipped: true)
 
   set text(font: "Microsoft YaHei")
 
