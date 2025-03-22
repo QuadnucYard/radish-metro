@@ -16,8 +16,6 @@
   if config.show-legend { (legend,) }
 }
 
-#config.desc-date
-
 #radishom(
   nj-radish,
   backend: "std",

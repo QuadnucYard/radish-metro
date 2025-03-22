@@ -30,20 +30,23 @@ const radishom: Structure = {
   },
   core: {
     anchor: import("/../submodules/radishom/src/core/anchor.typ?raw"),
+    dir: import("/../submodules/radishom/src/core/dir.typ?raw"),
+    feature: import("/../submodules/radishom/src/core/feature.typ?raw"),
     mod: import("/../submodules/radishom/src/core/mod.typ?raw"),
+    utils: import("/../submodules/radishom/src/core/utils.typ?raw"),
     vec: import("/../submodules/radishom/src/core/vec.typ?raw"),
   },
+  elem: {
+    line: import("/../submodules/radishom/src/elem/line.typ?raw"),
+    metro: import("/../submodules/radishom/src/elem/metro.typ?raw"),
+    mod: import("/../submodules/radishom/src/elem/mod.typ?raw"),
+    radish: import("/../submodules/radishom/src/elem/radish.typ?raw"),
+    shapes: import("/../submodules/radishom/src/elem/shapes.typ?raw"),
+    station: import("/../submodules/radishom/src/elem/station.typ?raw"),
+  },
   deps: import("/../submodules/radishom/src/deps.typ?raw"),
-  dir: import("/../submodules/radishom/src/dir.typ?raw"),
-  feature: import("/../submodules/radishom/src/feature.typ?raw"),
   lib: import("/../submodules/radishom/src/lib.typ?raw"),
-  line: import("/../submodules/radishom/src/line.typ?raw"),
-  metro: import("/../submodules/radishom/src/metro.typ?raw"),
-  radish: import("/../submodules/radishom/src/radish.typ?raw"),
   radishom: import("/../submodules/radishom/src/radishom.typ?raw"),
-  shapes: import("/../submodules/radishom/src/shapes.typ?raw"),
-  station: import("/../submodules/radishom/src/station.typ?raw"),
-  utils: import("/../submodules/radishom/src/utils.typ?raw"),
 };
 
 const assets = {

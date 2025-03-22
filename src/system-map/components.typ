@@ -11,7 +11,7 @@
 #let (N, S, W, E, NW, NE, SW, SE) = dirs
 
 
-#let line-stroke(line, sec, thickness: 6pt) = {
+#let line-stroke(line, sec, thickness: 6pt, inner-thickness: 2pt) = {
   let is-operating = (
     "open-date" in line.metadata
       and line.metadata.open-date != none
@@ -42,13 +42,29 @@
   } else {
     (12pt, 4pt)
   }
-  stroke(
-    paint: paint,
-    thickness: thickness,
-    // cap: "round",
-    join: "round",
-    dash: dash,
-  )
+  if inner-thickness != none and "S" in line.id {
+    (
+      stroke(
+        paint: paint,
+        thickness: thickness,
+        join: "round",
+        dash: dash,
+      ),
+      stroke(
+        paint: white,
+        thickness: inner-thickness,
+        join: "round",
+        dash: dash,
+      ),
+    )
+  } else {
+    stroke(
+      paint: paint,
+      thickness: thickness,
+      join: "round",
+      dash: dash,
+    )
+  }
 }
 
 #let label-renderer(station) = {
