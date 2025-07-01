@@ -39,10 +39,6 @@ jobs:
       - name: Setup Typst
         uses: typst-community/setup-typst@v3
 
-      - name: Download radishom
-        run: |
-          git clone https://github.com/QuadnucYard/radishom.git $HOME/.local/share/typst/packages/local/radishom/0.1.0
-
       - name: Download font assets
         run: |
           mkdir -p assets/fonts/
