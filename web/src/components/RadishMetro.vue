@@ -9,7 +9,6 @@ const props = defineProps<{
 }>();
 
 const document = ref<HTMLElement>();
-const compiled = ref("");
 
 onMounted(async () => {
   await initWorkspace();
@@ -27,17 +26,19 @@ async function update() {
     date: [settings.date.getFullYear(), settings.date.getMonth() + 1, settings.date.getDate()],
   });
   console.log("compile", settings, inputs);
-  const svg = await $typst.svg({
+  await $typst.canvas(document.value!, {
     mainFilePath: "/radish-metro/system-map/main.typ",
     inputs: { settings: inputs },
   });
-  compiled.value = svg;
   console.log("compile completed");
   nextTick(() => {
-    const svg = document.value?.firstChild as SVGSVGElement;
-    if (!svg) return;
-    emit("render", svg.width.baseVal.value, svg.height.baseVal.value);
-    console.log("render size", svg.width.baseVal.value, svg.height.baseVal.value);
+    const page_ = document.value?.firstChild;
+    if (!page_) return;
+    const page = page_ as HTMLElement;
+    const width = Number.parseFloat(page.style.width.slice(0, -2));
+    const height = Number.parseFloat(page.style.height.slice(0, -2));
+    console.log("render size", width, height);
+    emit("render", width, height);
   });
 }
 
@@ -47,7 +48,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div v-html="compiled" ref="document" />
+  <div ref="document" />
 </template>
 
 <style scoped></style>
